@@ -2,19 +2,21 @@
 include_once "../base.php";
 
 $DB=new DB($_GET['table']);
-$chk=$DB->math('count','*',$_POST);
 
+$chk=$DB->math('count','*',$_POST);
 if($chk>0){
+
     echo 1;
-    if($_GET['table']=="admin"){
-        $_SESSION['pr']=unserialize($Admin->find($_POST)['pr']);
-    }else  if($_GET['table']=="mem"){
-       
+    switch ($_GET['table']){
+        case "admin":
+            $_SESSION['admin']=$_POST['acc'];
+            
+            $_SESSION['pr']=unserialize($Admin->find(['acc'=>$_POST['acc']])['pr']);
+            break;
+        case "mem":
+            $_SESSION['mem']=$_POST['acc'];
+            break;
     }
-    $_SESSION[$_GET['table']]=$_POST['acc'];
-    
-    
-    // dd( $_SESSION['mem']);
 }else{
     echo 0;
 }

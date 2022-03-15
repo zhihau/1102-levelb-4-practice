@@ -1,5 +1,5 @@
 <?php
 include_once "../base.php";
 
-$Mem->save($_POST);
+$Type->save($_POST);
 

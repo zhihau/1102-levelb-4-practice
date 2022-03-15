@@ -2,7 +2,7 @@
 date_default_timezone_set("Asia/Taipei");
 session_start();
 class DB{
- private $dsn="mysql:host=localhost;charset=utf8;dbname=web15";
+ private $dsn="mysql:host=localhost;charset=utf8;dbname=db43";
  private $root="root";
  private $pw="";
  private $pdo;
@@ -120,19 +120,16 @@ $sql.=$arg;
 public function all(...$arg){
     $sql="select * from $this->table ";
     $sql.=$this->chk($arg);
-    // echo $sql;
     return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
 public function math($math,$col,...$arg){
     $sql="select $math($col) from $this->table ";
     $sql.=$this->chk($arg);
-    // echo $sql;
     return $this->pdo->query($sql)->fetchColumn();
 }
 public function find($arg){
     $sql="select * from $this->table ";
     $sql.=$this->jon($arg);
-    // echo $sql;
     return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
 }
 public function del($arg){
@@ -175,7 +172,6 @@ public function save($arg){
 // $Ad=new DB('ad');
 // $News=new DB('news');
 // $Bottom=new DB('bottom');
-
 // echo $Admin->save(['acc'=>'test3']);
 // dd($Admin->all());
 // $id=$Admin->math('max','id');
@@ -184,39 +180,6 @@ public function save($arg){
 // echo $Admin->del($id);
 // dd($Admin->q("select * from admin"));
 
-// $tt=$_GET['do']??'title';
-// switch($tt){
-//     case "menu":
-//         $DB=$Menu;
-//         break;
-//     case "total":
-//         $DB=$Total;
-//         break;
-//     case "title":
-//         $DB=$Title;
-//         break;
-//     case "image":
-//         $DB=$Image;
-//         break;
-//     case "ad":
-//         $DB=$Ad;
-//         break;
-//     case "news":
-//         $DB=$News;
-//         break;
-//     case "bottom":
-//         $DB=$Bottom;
-//         break;
-//     case "admin":
-//         $DB=$Admin;
-//         break;
-//     case "mvim":
-//         $DB=$Mvim;
-//         break;
-//     default:
-//         $DB=$Title;
-//         break;
-// }
 // web02
 // $User=new DB("user");
 // $View=new DB("view");
@@ -224,7 +187,7 @@ public function save($arg){
 // $Que=new DB("que");
 // $Log=new DB("log");
 
-// web04
+// 
 $Admin=new DB("admin");
 $Mem=new DB("mem");
 $Ord=new DB("ord");
@@ -254,7 +217,17 @@ if(($now+1)<=$pages){
     echo "<a href='?do=news&p=$next'> &gt; </a>";
 }
 
-
+if(!isset($_SESSION['view'])){
+    $view=$View->find(['date'=>date('Y-m-d')]);
+    if($view){
+        $view['total']++;
+        $View->save($view);
+        $_SESSION['total']=$view['total'];
+    }else{
+        $View->save(['date'=>date('Y-m-d'),'total'=>1]);
+        $_SESSION['total']=1;
+    }
+}
 
 $do=$_GET['do']??'main';
 $file='front/'.$do.'.php';
@@ -264,18 +237,8 @@ if(file_exists($file)){
     include "front/main.php";
 }
 */
-
-// if(!isset($_SESSION['view'])){
-//     $view=$View->find(['date'=>date('Y-m-d')]);
-//     if($view){
-//         $view['total']++;
-//         $View->save($view);
-//         $_SESSION['total']=$view['total'];
-//     }else{
-//         $View->save(['date'=>date('Y-m-d'),'total'=>1]);
-//         $_SESSION['total']=1;
-//     }
-// }
-
-// echo $Admin->save(['acc'=>'admin','pw'=>'1234','pr'=>serialize([1,2,3,4,5])]);
-// echo $Admin->save(['acc'=>'test','pw'=>'5678','pr'=>serialize([1,2,3,4,5])]);
+// echo "aaaa";
+// echo $Admin->save(['acc'=>'admin','pw'=>'1234', 'pr'=>serialize([1,2,3,4,5])]);
+// echo $Admin->save(['acc'=>'test','pw'=>'5678',  'pr'=>serialize([1,2,3,4,5])]);
+// echo $Admin->save(['acc'=>'mem01','pw'=>'mem01','pr'=>serialize([1,2,3,4,5])]);
+// echo $Admin->save(['acc'=>'mem02','pw'=>'mem02','pr'=>serialize([1,2,3,4,5])]);

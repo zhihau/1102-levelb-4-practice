@@ -1,29 +1,29 @@
 <?php
-
-$row=$Ord->find($_GET['id']);
+$o=$Ord->find($_GET['id']);
 ?>
-<h1 class="ct">訂單編號<span style="color:red"><?=$row['no'];?></span>的詳細資料</h1>
 
-<table class="all">
+<h1 class="ct">訂單編號<span style="color:red"><?=$o['no'];?></span>的詳細資料</h1>
+
+<table>
     <tr>
         <td class="tt">會員帳號</td>
-        <td class="pp"><?=$row['acc'];?></td>
+        <td class="pp"><?=$o['acc'];?></td>
     </tr>
     <tr>
         <td class="tt">姓名</td>
-        <td class="pp"><?=$row['name'];?></td>
+        <td class="pp"><?=$o['name'];?></td>
     </tr>
     <tr>
         <td class="tt">電子信箱</td>
-        <td class="pp"><?=$row['email'];?></td>
+        <td class="pp"><?=$o['email'];?></td>
     </tr>
     <tr>
         <td class="tt">聯絡地址</td>
-        <td class="pp"><?=$row['addr'];?></td>
+        <td class="pp"><?=$o['addr'];?></td>
     </tr>
     <tr>
         <td class="tt">連絡電話</td>
-        <td class="pp"><?=$row['tel'];?></td>
+        <td class="pp"><?=$o['tel'];?></td>
     </tr>
 </table>
 <table>
@@ -36,19 +36,22 @@ $row=$Ord->find($_GET['id']);
     </tr>
     <?php
     $total=0;
-    $goods=unserialize($row['goods']);
-foreach($goods as $id=>$qt){    
-$g=$Goods->find($id);
+    $goods=unserialize($o['goods']);
+foreach($goods as $id=>$qt){
+    $g=$Goods->find($id);
+
     ?>
     <tr class="pp">
         <td><?=$g['name'];?></td>
         <td><?=$g['no'];?></td>
         <td><?=$qt;?></td>
         <td><?=$g['price'];?></td>
-        <td><?php
-        $total+=$qt*$g['price'];
-        echo $qt*$g['price'];
-        ?></td>
+        <td>
+            <?php
+
+            $total+=$g['price']*$qt;
+            echo $g['price']*$qt?>
+        </td>
     </tr>
     <?php
 
@@ -56,6 +59,7 @@ $g=$Goods->find($id);
 ?>
 </table>
 <table>
-    <tr class="ct tt"><td>總價:<?=$total;?></td></tr>
+    <tr class="tt">
+        <td>總價：<?=$total;?></td>
+    </tr>
 </table>
-<div class="ct"><button onclick="location.href='?do=order'">返回</button></div>

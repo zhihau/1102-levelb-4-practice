@@ -99,23 +99,13 @@ input[type=text],input[type=password]
 }
 .s
 {
-	/* padding:10px; */
-	
-	/* border:1px solid black; */
 	display:none;
 }
 div.ww:hover > div.s
 {
 	display:block;
-
-
 }
 .sb button
 {
 	font-size:12px;
-}
-
-#left .s a
-{
-	background-color: lightgreen;
 }
